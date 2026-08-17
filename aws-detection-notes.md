@@ -15,7 +15,7 @@ index=aws sourcetype=aws:cloudtrail user="smit" action IN ("failure", "success")
 | sort -_time
 ```
 
-> **Fix applied:** original query had `action IN ("failure", "sucess")` — the misspelled "sucess" meant successful logins were silently excluded from results.
+> **Fix applied:** original query had `action IN ("failure", "sucess")` - the misspelled "sucess" meant successful logins were silently excluded from results.
 
 ### Step 2 - Risk-score successful logins by MFA status
 
@@ -37,7 +37,7 @@ index=aws user="smit" earliest="<login_time>"
 | sort -_time
 ```
 
-> AWS console login without MFA is not a security best practice — treat as a high-severity event regardless of downstream activity.
+> AWS console login without MFA is not a security best practice - treat as a high-severity event regardless of downstream activity.
 
 ---
 
@@ -67,7 +67,7 @@ A lookup table (`user`, `status`, `action`) makes it possible to flag unauthoriz
 
 ## 3. Stale Authentication Credentials
 
-Stale credentials are active credentials that haven't been used for an extended period. Query pending — typically built as a lookup of last-auth timestamps against an inactivity threshold (e.g. 90 days).
+Stale credentials are active credentials that haven't been used for an extended period. Query pending - typically built as a lookup of last-auth timestamps against an inactivity threshold (e.g. 90 days).
 
 ---
 
