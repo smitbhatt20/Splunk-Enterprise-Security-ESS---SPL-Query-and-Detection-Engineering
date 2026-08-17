@@ -16,7 +16,7 @@ A high-risk sign-in can be triggered by:
 - Risky user account
 - Suspicious token activity
 
-### Step 1 — Pull sign-in context
+### Step 1 - Pull sign-in context
 
 ```spl
 index=azure sourcetype=azure:signinlogs user="smit"
@@ -33,7 +33,7 @@ This query identifies:
 6. Sign-in status
 7. Conditional Access result
 
-### Step 2 — Isolate high-risk sign-ins, last 7 days
+### Step 2 - Isolate high-risk sign-ins, last 7 days
 
 ```spl
 index=azure sourcetype=azure:signinlogs user.account="smit" earliest=-7d latest=now risk_level="High"
