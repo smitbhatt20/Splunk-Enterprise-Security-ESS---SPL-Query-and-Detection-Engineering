@@ -6,7 +6,7 @@ Splunk SPL queries and triage logic for AWS notable events.
 
 ## 1. AWS Console Login Without MFA
 
-### Step 1 — Triage for brute force pattern
+### Step 1 - Triage for brute force pattern
 Check for multiple failed login attempts before a successful login, and confirm whether the same source IP was used.
 
 ```spl
@@ -17,18 +17,18 @@ index=aws sourcetype=aws:cloudtrail user="smit" action IN ("failure", "success")
 
 > **Fix applied:** original query had `action IN ("failure", "sucess")` — the misspelled "sucess" meant successful logins were silently excluded from results.
 
-### Step 2 — Risk-score successful logins by MFA status
+### Step 2 - Risk-score successful logins by MFA status
 
 ```spl
 index=aws sourcetype=aws:cloudtrail action="success"
-| eval risk_score = case(MFAUsed="No", "High", MFAUsed="Yes", "Low", true(), "Unknown")
+| eval risk_score = if(MFAUsed="No", "High", MFAUsed="Yes", "Low", true, "Unknown")
 | table _time user arn src_ip src_geo eventName MFAUsed risk_score
 | sort -_time
 ```
 
-> **Fix applied:** added a third bucket for missing/null `MFAUsed` values (`case()` instead of `if()`) — some CloudTrail events don't populate this field, and those were silently falling into "Low" risk before.
+> **Fix applied:** added a third bucket for missing/null `MFAUsed` values - some CloudTrail events don't populate this field, and those were silently falling into "Low" risk before.
 
-### Step 3 — Pivot to post-login activity
+### Step 3 - Pivot to post-login activity
 Once a no-MFA success login is confirmed, check what the user did afterward — this surfaces abnormal API calls (e.g. `ListS3Buckets`, `GetAccountInformation`).
 
 ```spl
@@ -73,7 +73,7 @@ Stale credentials are active credentials that haven't been used for an extended 
 
 ## 4. AWS GuardDuty Finding
 
-### Step 1 — Pull the finding
+### Step 1 - Pull the finding
 
 ```spl
 index=aws sourcetype=aws:guardduty arn="<arn>"
@@ -87,7 +87,7 @@ Common GuardDuty finding types:
 - `UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration`
 - `Discovery:IAMUser/AnomalousBehavior`
 
-### Step 2 — Pivot to CloudTrail for context
+### Step 2 - Pivot to CloudTrail for context
 Once the user, ARN, and account ID are known, pivot to CloudTrail around the finding's timeframe for full activity context.
 
 ```spl
