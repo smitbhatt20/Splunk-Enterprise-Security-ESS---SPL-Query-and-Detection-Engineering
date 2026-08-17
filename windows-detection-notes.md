@@ -97,6 +97,6 @@ index=windows sourcetype=windows:securitylogs EventCode IN ("4720","4728","4732"
 | sort -_time
 ```
 
-> **Fix applied:** original condition was `date_hour>=19 AND date_hour<=6`, which can never be true — no hour is both ≥19 and ≤6. That always scored 30 regardless of time, so a 2 AM alert like the example above would incorrectly read as low risk. Because the after-hours window spans midnight, it needs `OR`, not `AND`.
+> **Fix applied:** original condition was `date_hour>=19 AND date_hour<=6`, which can never be true - no hour is both ≥19 and ≤6. That always scored 30 regardless of time, so a 2 AM alert like the example above would incorrectly read as low risk. Because the after-hours window spans midnight, it needs `OR`, not `AND`.
 
 **Escalation logic:** if this is the first time `j.smith` has performed this action, and it happened outside business hours, escalate. If it's a frequent, routine action for this user, treat as lower priority.
