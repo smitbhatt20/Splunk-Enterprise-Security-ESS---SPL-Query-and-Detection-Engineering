@@ -61,7 +61,7 @@ index=processes parent_process="powershell.exe"
 | User performing action | j.smith |
 | New account created | backup_admin |
 | Added to group | Administrators |
-| Time | 02:13 AM (Bengaluru office) |
+| Time | 02:13 AM (Hyderabad office) |
 
 ### Step 1 - Baseline the actor's history (30-day lookback)
 Check how often `j.smith` creates accounts and adds them to admin groups, to establish whether this is routine or anomalous for this user.
