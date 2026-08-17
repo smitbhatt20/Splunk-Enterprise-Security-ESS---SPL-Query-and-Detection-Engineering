@@ -6,7 +6,7 @@ Splunk SPL queries and triage logic for Windows notable events.
 
 ## 1. Unusual PowerShell Execution
 
-### Step 1 — Command line audit
+### Step 1 - Command line audit
 Pull raw PowerShell command-line activity per host/user and scan for suspicious patterns: `Invoke-Expression`, `IEX`, `DownloadString`, `-ExecutionPolicy Bypass`, `-NoLogo`/`-NoProfile` combined with encoded commands.
 
 ```spl
@@ -15,7 +15,7 @@ index=windows EventCode=4104
 | sort -_time
 ```
 
-### Step 2 — Parent/child process relationship
+### Step 2 - Parent/child process relationship
 Look for what spawned PowerShell, and what PowerShell spawned. Include process hashes to verify integrity.
 
 ```spl
@@ -24,7 +24,7 @@ index=processes process="powershell.exe"
 | sort -_time
 ```
 
-### Step 3 — Risk-score by parent process
+### Step 3 - Risk-score by parent process
 
 ```spl
 index=processes process="powershell.exe"
@@ -40,7 +40,7 @@ index=processes process="powershell.exe"
 | `winword.exe` → `powershell.exe` | Highly suspicious |
 | `svchost.exe` → `powershell.exe` | Likely benign |
 
-### Step 4 — Child processes spawned by PowerShell
+### Step 4 - Child processes spawned by PowerShell
 
 ```spl
 index=processes parent_process="powershell.exe"
@@ -63,7 +63,7 @@ index=processes parent_process="powershell.exe"
 | Added to group | Administrators |
 | Time | 02:13 AM (Bengaluru office) |
 
-### Step 1 — Baseline the actor's history (30-day lookback)
+### Step 1 - Baseline the actor's history (30-day lookback)
 Check how often `j.smith` creates accounts and adds them to admin groups, to establish whether this is routine or anomalous for this user.
 
 ```spl
@@ -72,7 +72,7 @@ index=windows sourcetype=windows:securitylogs EventCode IN ("4720","4728","4732"
 | table _time Source_Host SubjectUserName SubjectUserSID src_ip src_geolocation TargetUserName TargetUserSID EventCode EventName Action Process_PID
 ```
 
-### Step 2 — Check what the new account did next
+### Step 2 - Check what the new account did next
 
 ```spl
 index=windows sourcetype=windows:securitylogs user_name="backup_admin"
@@ -80,7 +80,7 @@ index=windows sourcetype=windows:securitylogs user_name="backup_admin"
 | sort -_time
 ```
 
-### Step 3 — Frequency baseline
+### Step 3 - Frequency baseline
 
 ```spl
 index=windows sourcetype=windows:securitylogs EventCode IN ("4624","4728","4732")
@@ -88,7 +88,7 @@ index=windows sourcetype=windows:securitylogs EventCode IN ("4624","4728","4732"
 | stats count by SubjectUserName
 ```
 
-### Step 4 — Add an after-hours risk flag
+### Step 4 - Add an after-hours risk flag
 
 ```spl
 index=windows sourcetype=windows:securitylogs EventCode IN ("4720","4728","4732") SubjectUserName="j.smith"
