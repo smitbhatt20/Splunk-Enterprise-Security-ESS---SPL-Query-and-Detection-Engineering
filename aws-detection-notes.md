@@ -29,7 +29,7 @@ index=aws sourcetype=aws:cloudtrail action="success"
 > **Fix applied:** added a third bucket for missing/null `MFAUsed` values - some CloudTrail events don't populate this field, and those were silently falling into "Low" risk before.
 
 ### Step 3 - Pivot to post-login activity
-Once a no-MFA success login is confirmed, check what the user did afterward — this surfaces abnormal API calls (e.g. `ListS3Buckets`, `GetAccountInformation`).
+Once a no-MFA success login is confirmed, check what the user did afterward - this surfaces abnormal API calls (e.g. `ListS3Buckets`, `GetAccountInformation`).
 
 ```spl
 index=aws user="smit" earliest="<login_time>"
@@ -61,7 +61,7 @@ Flag logins from terminated/inactive accounts.
 | sort -_time
 ```
 
-A lookup table (`user`, `status`, `action`) makes it possible to flag unauthorized access from accounts that should no longer be active — e.g. a "terminated" user with a "success" login.
+A lookup table (`user`, `status`, `action`) makes it possible to flag unauthorized access from accounts that should no longer be active - e.g. a "terminated" user with a "success" login.
 
 ---
 
