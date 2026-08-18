@@ -48,7 +48,11 @@ index=authentication user="smit" action IN ("success","failure")
 | table _time user src_ip src_geolocation host action
 | sort -_time
 ```
+---
 
+## 3. Stale Authentication Credentials
+
+Stale credentials are active credentials that haven't been used for an extended period. Query pending - typically built as a lookup of last-auth timestamps against an inactivity threshold (e.g. 90 days).
 ### Cross-reference against IAM status
 Flag logins from terminated/inactive accounts.
 
@@ -62,13 +66,6 @@ Flag logins from terminated/inactive accounts.
 ```
 
 A lookup table (`user`, `status`, `action`) makes it possible to flag unauthorized access from accounts that should no longer be active - e.g. a "terminated" user with a "success" login.
-
----
-
-## 3. Stale Authentication Credentials
-
-Stale credentials are active credentials that haven't been used for an extended period. Query pending - typically built as a lookup of last-auth timestamps against an inactivity threshold (e.g. 90 days).
-
 ---
 
 ## 4. AWS GuardDuty Finding
