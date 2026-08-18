@@ -59,7 +59,7 @@ Flag logins from terminated/inactive accounts.
 ```spl
 (index=vpn OR index=authentication) action="success"
 | lookup IAM_Inventory_Status_lookup user OUTPUT status
-| search status IN ("terminated","inactive","resigned")
+| search status IN ("terminated","inactive","resigned","active")
 | eval risk_score=if(status IN ("terminated","inactive","resigned"),100,50)
 | table _time user status src_ip src_geolocation action risk_score
 | sort -_time
