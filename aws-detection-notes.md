@@ -73,7 +73,7 @@ A lookup table (`user`, `status`, `action`) makes it possible to flag unauthoriz
 ### Step 1 - Pull the finding
 
 ```spl
-index=aws sourcetype=aws:guardduty arn="<arn>"
+index=aws sourcetype=aws:guardduty arn="arn:partition:service:region:cloud_account.id:resource-type/resourceid"
 | table _time aws_account_id aws_region arn username src_ip src_geolocation type severity title
 | sort -_time
 ```
