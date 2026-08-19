@@ -1,4 +1,4 @@
-# SSH Brute Force Detection — SPL Query & Investigation Guide
+# SSH Brute Force Detection - SPL Query & Investigation Guide
 
 > **Detection Engineering** | Splunk Enterprise Security | MITRE ATT&CK: T1110 — Brute Force
 
@@ -42,25 +42,25 @@ After `split(Message, " ")`, each word maps to a position:
 
 ## SPL Query Evolution
 
-### Step 1 — Basic Search
+### Step 1 - Basic Search
 ```spl
 index=ssh_logs "Failed password"
 ```
 
-### Step 2 — Add Table View
+### Step 2 - Add Table View
 ```spl
 index=ssh_logs "Failed password"
 | table _time user src_ip Message
 ```
 
-### Step 3 — Parse Message with split()
+### Step 3 - Parse Message with split()
 ```spl
 index=ssh_logs "Failed password"
 | table _time user src_ip Message
 | eval temp = split(Message, " ")
 ```
 
-### Step 4 — Extract Fields with mvindex()
+### Step 4 - Extract Fields with mvindex()
 ```spl
 index=ssh_logs "Failed password"
 | eval temp = split(_raw, " ")
@@ -70,7 +70,7 @@ index=ssh_logs "Failed password"
 | fields - temp Message
 ```
 
-### Step 5 — Final Investigation Query (Full)
+### Step 5 - Final Investigation Query (Full)
 ```spl
 index=ssh_logs "Failed password"
 | eval temp = split(_raw, " ")
@@ -136,8 +136,8 @@ index=ssh_logs "Failed password"
 ### Investigation Steps
 1. Check if `src_ip` is a known Tor exit node or VPN provider
 2. Check if any login **succeeded** from same IP — pivot to `Accepted password`
-3. Check `unique_users` — high count = spray attack targeting common usernames
-4. Look at `first_seen` vs `last_seen` — ongoing or historical?
+3. Check `unique_users` - high count = spray attack targeting common usernames
+4. Look at `first_seen` vs `last_seen` - ongoing or historical?
 5. Cross-reference IP with threat intel (VirusTotal, AbuseIPDB)
 6. Block at firewall if Critical, create Splunk ES notable event
 
